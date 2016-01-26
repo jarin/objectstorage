@@ -1,4 +1,4 @@
-package no.penger
+package no.manifold
 
 import argonaut._, Argonaut._
 import scalaz._, Scalaz._
@@ -15,11 +15,16 @@ case class Cluster(datacenters: Option[Map[String, String]])
 case class StorageCredentials(datacenterUrl: Option[String], authtok: String, storageToken: String, storageUrl: String, expiry: String)
 
 object ObjectStoragePurgatory extends App {
+
+  // deletes every file (presumably) in container
+  // obviously: use with care
+
   val constretto = Constretto(List(properties("classpath:objectstore.properties")),"local")
   val publicAuth = constretto[String]("authUrl")
   val userName = constretto[String]("userName")
   val apiKey = constretto[String]("apiKey")
   val dataCenter = constretto[String]("dataCenter")
+  val container = constretto[String]("container")
 
 
   implicit def clusterDecode = DecodeJson(c =>
@@ -68,8 +73,8 @@ object ObjectStoragePurgatory extends App {
 
   val plist = for {
     credentials <- t
-    purged <- getFileList(credentials, "penger-backup01-dev")
-    p <- deleteFileList(purged, credentials, "penger-backup01-dev")
+    purged <- getFileList(credentials, container)
+    p <- deleteFileList(purged, credentials, container)
   } yield p
 
   println(Await.result(plist, 10 seconds))

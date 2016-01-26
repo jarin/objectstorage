@@ -1,0 +1,5 @@
+@local.authUrl = "https://ams01.objectstorage.softlayer.net/auth/v1.0/"
+@local.userName = "<IBMprefix from console>:<username>"
+@local.apiKey = "<apikey from console>"
+@local.dataCenter = "<ams01>"
+@local.container = "<container>"

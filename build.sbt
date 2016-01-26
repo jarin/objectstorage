@@ -3,7 +3,7 @@ scalaVersion := "2.11.7"
 name:= "objectstorage"
 
 
-organization:="penger.no"
+organization:="manifold.no"
 
 version := "0.9"
 
